@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+     <meta charset="UTF-8"  name="viewport" content="width=device-width, initial-scale=1">
     <title>BR-DPP leaderboard</title>
     <style>
       #top-players-div {
@@ -33,12 +33,12 @@
     <div id="top-players-div">
       {% if top_players_data %} {% for data in top_players_data %}
       <ul>
-        <span class="player-data"
+        <span class="player-data" onclick="location.href='/board/user/{{ data.user_id }}'"
           >{{ data.username }} - {{data.raw_pp }}pp</span
         >
       </ul>
       {% endfor %} {% else %}
-      <p>Não foi possível regastar os dados.</p>
+      <p>Não foi possível resgatar os dados.</p>
       {% endif %}
     </div>
   </body>

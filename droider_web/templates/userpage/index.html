@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% if user_data %}
+        <title>{{ user_data.username }}</title>
+    {% else %}
+        <title>UNKNOWN USER</title>
+    {% endif %}
+    <meta charset="UTF-8"  name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .avatar-img {
+            border: 5px solid;
+            border-radius: 25px;
+        }
+        #data-div {
+            j
+        }
+    </style>
+</head>
+<body>
+    <div id="data-div" align="center">
+        {% if user_data %}
+            <img class="avatar-img" src="{{ user_data.avatar_url }}" alt="{{ user_data.username }}">
+            <p style="font-weight: bold">{{ user_data.username }}</p>
+            <p>DPP: {{ user_data.raw_pp}}pp<br></p>
+            <p>ACC: {{ user_data.overall_acc }}%<br></p>
+            <p>PlayCount: {{ user_data.playcount }}<br></p>
+            <p>Score: {{ user_data.total_score }}<br></p>
+            <p>UID: {{ user_data.user_id }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
