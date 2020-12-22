@@ -3,3 +3,4 @@ PyGithub~=1.54
 python-dotenv~=0.15.0
 requests~=2.25.1
 pyrebase5~=5.0.1
+gunicorn~=20.0.4
