@@ -6,14 +6,24 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
-        {% if br_rank_css %}
-            {{ br_rank_css }}
-        {% endif %}
-        {% if background_image %}
-            body {
-               background-image: url({{ background_image}})
-            }
-        {% endif %}
+        #top-players-div {
+            background-color: black;
+            margin: auto;
+            width: 25%;
+            border: 3px solid darkslategrey;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .player-data:hover {
+        font-weight: bold;
+        cursor: pointer
+        }
+
+        body {
+            background-image: url("https://media.gettyimages.com/videos/fast-speed-line-loop-from-middle-to-the-outside-anime-motion-4k-video-id1277595267?s=640x640");
+        }
     </style>
 </head>
 <body>
