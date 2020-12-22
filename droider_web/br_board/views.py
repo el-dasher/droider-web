@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from config.firebase_cfg import DATABASE, request_file
+from config.firebase_cfg import DATABASE
 
 
 def index(request):
@@ -9,7 +9,7 @@ def index(request):
     context = {
         "top_players_data": DATABASE.get().val()["TOP_PLAYERS"]["data"],
     }
-    
+
     for user in context["top_players_data"]:
         user: dict
         user["raw_pp"] = f"{float(user['raw_pp']):.2f}"

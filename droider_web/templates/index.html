@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BR-DPP leaderboard</title>
     <style>
-        #top-players-div {
-            background-color: black;
-            margin: auto;
-            width: 25%;
-            border: 3px solid darkslategrey;
-            border-radius: 5px;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .player-data:hover {
-        font-weight: bold;
-        cursor: pointer
-        }
-
-        body {
-            background-image: url("https://media.gettyimages.com/videos/fast-speed-line-loop-from-middle-to-the-outside-anime-motion-4k-video-id1277595267?s=640x640");
-        }
+      #top-players-div {
+        margin: auto;
+        width: 50%;
+        height: 100%;
+        border: 5px solid darkslategrey;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        background-color: silver;
+      }
+      .player-data:hover {
+        font-weight: bolder;
+        cursor: pointer;
+      }
+      .player-data {
+        font-family: cursive;
+        font-size: large;
+      }
+      body {
+        background-image: url("https://png.pngtree.com/thumb_back/fw800/back_our/20190620/ourmid/pngtree-auto-show-board-background-material-image_162844.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+      }
     </style>
-</head>
-<body>
-    {% if top_players_data %}
-        <div id="top-players-div">
-            {% for data in top_players_data %}
-                <ul>
-                    <span class="player-data">{{ data.username }} - {{data.raw_pp }}pp</span>
-                </ul>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>Não foi possível regastar os dados.</p>
-    {% endif %}
-</body>
+  </head>
+  <body>
+    <div id="top-players-div">
+      {% if top_players_data %} {% for data in top_players_data %}
+      <ul>
+        <span class="player-data"
+          >{{ data.username }} - {{data.raw_pp }}pp</span
+        >
+      </ul>
+      {% endfor %} {% else %}
+      <p>Não foi possível regastar os dados.</p>
+      {% endif %}
+    </div>
+  </body>
 </html>
