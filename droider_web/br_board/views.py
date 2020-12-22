@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from config.firebase_cfg import DATABASE
+from utils.osu.osu_droid.droid_data_getter import get_droid_data
 
 
 def format_pp(user_data):
@@ -23,12 +24,16 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def user_page(request, user_id):
+async def user_page(request, user_id):
     template = loader.get_template("userpage/index.html")
 
-    context = {
-        "user_data": list(filter(lambda e: e["user_id"] == user_id, DATABASE.get().val()["TOP_PLAYERS"]["data"]))[0],
-    }
-    context["user_data"]["raw_pp"] = f"{context['user_data']['raw_pp']:.2f}"
-    
+    context: dict = dict(
+        user_data=(await get_droid_data(user_id))["user_data"]
+    )
+
+    try:
+        context["user_data"]["raw_pp"] = f'{context["user_data"]["raw_pp"]:.2f}'
+    except TypeError:
+        pass
+
     return HttpResponse(template.render(context, request))
