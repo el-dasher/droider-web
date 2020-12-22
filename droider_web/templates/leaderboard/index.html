@@ -45,14 +45,16 @@
           margin: auto;
           border: solid 1px;
           border-radius: 1px;
-          width: 15vw;
+          width: 20em;
           border: solid 2.5px;
-          border-radius: 0px 10px 0px 10px;
+          border-radius: 25px 25px 0px 0px;
           background-color: black;
           color: white;
         "
-
-        >Buscar usúario<input type="number" placeholder="USER_ID" onsubmit="requestDroidProfile"
+        >Buscar usúario<input
+          type="number"
+          placeholder="USER_ID"
+          onsubmit="requestDroidProfile"
       /></span>
       <div id="top-players-div">
         {% if top_players_data %} {% for data in top_players_data %}
@@ -69,10 +71,14 @@
       </div>
     </div>
     <script>
-      let input = document.querySelector("#search-by-id")
+      let input = document.querySelector("#search-by-id");
       input.addEventListener("keyup", (event) => {
         if (event.keyCode === 13) {
-          location.href = `/board/user/${event.target.value}`
+          if (event.target.value.length !== 6) {
+            window.alert("O ID precisa ter 6 digitos!");
+          } else {
+            location.href = `/board/user/${event.target.value}`;
+          }
         }
       });
     </script>
