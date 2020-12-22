@@ -27,6 +27,8 @@
             <p>PlayCount: {{ user_data.playcount }}<br></p>
             <p>Score: {{ user_data.total_score }}<br></p>
             <p>UID: {{ user_data.user_id }}</p>
+        {% else %}
+            <p>Usúario não encontrado, reação.</p>
         {% endif %}
     </div>
 </body>
