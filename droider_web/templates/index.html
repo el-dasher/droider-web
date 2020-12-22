@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        {% if br_rank_css %}
+            {{ br_rank_css }}
+        {% endif %}
+        {% if background_image %}
+            body {
+               background-image: url({{ background_image}})
+            }
+        {% endif %}
+    </style>
+</head>
+<body>
+    {% if top_players_data %}
+        <div id="top-players-div">
+            {% for data in top_players_data %}
+                <ul>
+                    <span class="player-data">{{ data.username }} - {{data.raw_pp }}pp</span>
+                </ul>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Não foi possível regastar os dados.</p>
+    {% endif %}
+</body>
+</html>
