@@ -1,0 +1,1 @@
+# The static files are actually hosted in a database bruh.
