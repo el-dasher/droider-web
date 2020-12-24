@@ -25,13 +25,20 @@
       }
     </style>
   </head>
-  <body class="grey lighten-1">
+  <body class="grey lighten-1" >
     {% include "../nav.html" %}
+    <br />
+    <br />
+    <br />
     <main>
-      <div id="top-players-div" class="grey lighten-1">
+      <div id="top-players-div" class="grey lighten-1 hide-on-large-only">
         {% if top_players_data %} {% for user in top_players_data %}
-        <div class="player-data" class="grey lighten-3" onclick="location.href = '/user/{{ user.user_id }}'">
-          <span class="row" >
+        <div
+          class="player-data"
+          class="grey lighten-3"
+          onclick="location.href = '/user/{{ user.user_id }}'"
+        >
+          <span class="row">
             <!-- prettier-ignore -->
             <span class="col s12"
               ><h5>{{ user.username }}</h5>
@@ -53,10 +60,49 @@
           </span>
           <div class="divider"></div>
         </div>
-        {% endfor %} {% else %}
-        <p>Não foi possível resgatar os dados.</p>
-        {% endif %}
+        {% endfor %}
       </div>
+      <div
+        id="top-players-div-spread"
+        class="grey lighten-1 show-on-large-only"
+      >
+        <table class="highlight">
+          <thead>
+            <tr>
+              <th>Nickname</th>
+              <th>Score</th>
+              <th>Accuracy</th>
+              <th>Aim</th>
+              <th>Speed</th>
+              <th>Reading</th>
+              <th>Consistency</th>
+              <th>Playcount</th>
+              <th>Droid PP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in top_players_data %}
+            <tr
+              onclick="location.href='/user/{{ user.user_id }}'"
+              class="player-data"
+            >
+              <td>{{ user.username }}</td>
+              <td>{{ user.total_score }}</td>
+              <td>{{ user.overall_acc}}%</td>
+              <td class="aim">{{ user.aim }}</td>
+              <td class="speed">{{ user.speed }}</td>
+              <td class="reading">{{ user.reading }}</td>
+              <td class="consistency">{{ user.consistency }}</td>
+              <td class="playcount">{{user.playcount}}</td>
+              <td>{{ user.raw_pp }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p>Não foi possível resgatar os dados.</p>
+      {% endif %}
     </main>
   </body>
   <script>
@@ -64,12 +110,16 @@
     const speedValues = document.getElementsByClassName("speed");
     const readingValues = document.getElementsByClassName("reading");
     const consistencyValues = document.getElementsByClassName("consistency");
-    [aimValues, speedValues, readingValues, consistencyValues].forEach(
-      (item) => {
-        Array.from(item).forEach((data) => {
-          data.innerText = parseFloat(data.innerText).toFixed(2);
-        });
-      }
-    );
+    try {
+      [aimValues, speedValues, readingValues, consistencyValues].forEach(
+        (item) => {
+          Array.from(item).forEach((data) => {
+            data.innerText = parseFloat(data.innerText).toFixed(2);
+          });
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
   </script>
 </html>
