@@ -1,49 +1,79 @@
 <head>
-  <style>
-    #menu-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-      background-color: black;
-      border: solid yellow;
-      border-radius: 5px;
-    }
-
-    .menu-line {
-      float: left;
-    }
-
-    .menu-line a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 10px;
-    }
-
-    .menu-line a:hover {
-      font-weight: bolder;
-      font-size: 18px;
-      background: lightgray;
-    }
-
-    nav {
-      padding-bottom: 10px;
-    }
-  </style>
-
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
   />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <style>
+    .dropdown-content {
+      width: max-content !important;
+      height: auto !important;
+    }
+    #userIdQuery {
+      text-align: center;
+    }
+  </style>
 </head>
-
-<header>
-  <nav>
-    <ul id="menu-list">
-      <li class="menu-line"><a href="/invite">DISCORD</a></li>
-      <li class="menu-line"><a href="/rank-br">RANK-DPP-BR</a></li>
-      <li class="menu-line"><a href="/calc">PP CALCULATOR</a></li>
+<body>
+  <header>
+    <ul id="menu-dropdown" class="dropdown-content">
+      <li class="divider">Discord server</li>
+      <li><a href="/invite">DISCORD</a></li>
+      <li class="divider">osu!</li>
+      <li><a href="/rank-br">RANK-DPP-BR</a></li>
+      <li><a href="/calc">PP CALCULATOR</a></li>
     </ul>
-  </nav>
-</header>
+    <nav class="grey darken-3">
+      <div class="nav-wrapper">
+        <a class="brand-logo right hide-on-small-only">osu!droid brasil</a>
+        <ul>
+          <li>
+            <a class="dropdown-trigger hide-on-med-and-up" data-target="menu-dropdown"
+              ><i class="material-icons">menu</i></a
+            >
+          </li>
+          <div class="hide-on-med-and-down">
+            <li><a href="/invite">DISCORD</a></li>
+            <li><a href="/rank-br">RANK-DPP-BR</a></li>
+            <li><a href="/calc">PP CALCULATOR</a></li>
+          </div>
+          <li>
+            <form onsubmit="getUserQuery(event); return false;">
+              <div class="input-field">
+                <input
+                  id="userIdQuery"
+                  type="text"
+                  placeholder="Procurar por UID"
+                  class="autocomplete white-text"
+                />
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <script>
+    function getUserQuery(event) {
+      userIdQueryValue = userIdQuery.value;
+      location.href = `/user/${userIdQueryValue}`;
+    }
+
+    const userIdQuery = document.getElementById("userIdQuery");
+    userIdQuery.focus();
+
+    $(document).ready(() => {
+      $(".modal").modal();
+      $(".dropdown-trigger").dropdown();
+    });
+  </script>
+</body>

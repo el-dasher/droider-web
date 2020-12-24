@@ -28,7 +28,7 @@
       }
     </style>
   </head>
-  <body>
+<body class="grey darken-2">
     {% include "../nav.html" %}
     <br /><br />
     <main>
@@ -51,7 +51,7 @@
 
           <button
             id="submit-play"
-            class="waves-effect waves-light btn"
+            class="waves-effect waves-light btn grey lighten-1"
             name="submit-btn"
             type="submit"
           >
@@ -85,6 +85,7 @@
                   break;
                 case "map-id":
                   map_id.query = "undefined";
+                  break;
               }
             }
           });

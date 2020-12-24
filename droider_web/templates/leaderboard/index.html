@@ -13,105 +13,70 @@
       content="Os melhores jogadores brasileiros de osu!droid :)"
     />
     <meta property="og:type" content="website" />
-    <meta
-      name="og:image"
-      itemprop="image"
-      content="https://cdn.discordapp.com/icons/789604515028271154/a_73ec721f5311691d8136e7516047e38e.gif?size=1024"
-    />
+    <meta name="og:image" itemprop="image" content="" />
     <title>BR-DPP leaderboard</title>
     <style>
-      #top-players-div,
-      #search-by-id {
-        margin: auto;
-        width: 60vw;
-        height: 100%;
-        border: 5px solid black;
-        border-radius: 5px;
-        padding: 10px;
-        text-align: center;
-        background-color: white;
-        justify-content: center;
-      }
       .player-data:hover {
         cursor: pointer;
       }
-      body {
-        background-image: url("https://pro2-bar-s3-cdn-cf6.myportfolio.com/4d29a4ffc41663d7f15cc554c9e98126/ae3f4c08-3cd5-474e-82d4-70b2dd007cb8_rwc_0x58x540x423x540.gif?h=e98ec96d74a7978be5a3c9af6511b71f");
-        background-size: cover;
-        background-attachment: fixed;
-      }
-      input {
-        color: white;
-      }
     </style>
   </head>
-  <body>
+  <body class="grey lighten-1">
     {% include "../nav.html" %}
     <main>
-      <div style="text-align: center">
-        <span
-          id="search-by-id"
-          style="
-            display: block;
-            margin: auto;
-            border: solid 1px;
-            border-radius: 1px;
-            width: 20em;
-            border: solid 2.5px;
-            border-radius: 25px 25px 0px 0px;
-            background-color: black;
-            color: white;
-          "
-          ><label>Buscar usúario</label>
-          <input
-            type="number"
-            placeholder="USER_ID"
-            onsubmit="requestDroidProfile"
-        /></span>
-        <div id="top-players-div">
-          {% if top_players_data %}
-          <table class="highlight responsive-table">
-            <thead>
-              <tr>
-                <th>Nickname</th>
-                <th>Score</th>
-                <th>accuracy</th>
-                <th>droid pp</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for user in top_players_data %}
-
-              <tr
-                onclick="location.href='/user/{{ user.user_id }}'"
-                class="player-data"
-              >
-                <td>{{ user.username }}</td>
-                <td>{{ user.total_score }}</td>
-                <td>{{ user.overall_acc}}%</td>
-                <td>{{user.raw_pp}}</td>
-              </tr>
-
-              {% endfor %}
-            </tbody>
-            {% else %}
-            <p>Não foi possível resgatar os dados.</p>
-            {% endif %}
-          </table>
-        </div>
+      <div id="top-players-div" class="grey lighten-1">
+        {% if top_players_data %}
+        <table class="highlight responsive-table">
+          <thead>
+            <tr>
+              <th>Nickname</th>
+              <th>Score</th>
+              <th>Accuracy</th>
+              <th>Aim</th>
+              <th>Speed</th>
+              <th>Reading</th>
+              <th>Consistency</th>
+              <th>Playcount</th>
+              <th>Droid pp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in top_players_data %}
+            <tr
+              onclick="location.href='/user/{{ user.user_id }}'"
+              class="player-data"
+            >
+              <td>{{ user.username }}</td>
+              <td>{{ user.total_score }}</td>
+              <td>{{ user.overall_acc}}%</td>
+              <td class="aim">{{ user.aim }}</td>
+              <td class="speed">{{ user.speed }}</td>
+              <td class="reading">{{user.reading}}</td>
+              <td class="consistency">{{ user.consistency }}</td>
+              <td class="playcount">{{user.playcount}}</td>
+              <td>{{user.raw_pp}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          {% else %}
+          <p>Não foi possível resgatar os dados.</p>
+          {% endif %}
+        </table>
       </div>
-      <script>
-        let input = document.querySelector("#search-by-id");
-        input.addEventListener("keyup", (event) => {
-          if (event.keyCode === 13) {
-            if (event.target.value.length !== 6) {
-              window.alert("O ID precisa ter 6 digitos!");
-            } else {
-              location.href = `/user/${event.target.value}`;
-            }
-          }
-        });
-      </script>
     </main>
   </body>
+  <script>
+    const aimValues = document.getElementsByClassName("aim");
+    const speedValues = document.getElementsByClassName("speed");
+    const readingValues = document.getElementsByClassName("reading");
+    const consistencyValues = document.getElementsByClassName("consistency");
+
+    [aimValues, speedValues, readingValues, consistencyValues].forEach(
+      (item) => {
+        Array.from(item).forEach((data) => {
+          data.innerText = parseFloat(data.innerText).toFixed(2);
+        });
+      }
+    );
+  </script>
 </html>
