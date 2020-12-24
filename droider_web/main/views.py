@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from config.firebase_cfg import DATABASE
 from utils.osu.osu_droid.droid_data_getter import get_droid_data
-from utils.osu.osu_std.ppv2_calculator import get_ppv2
+from utils.osu.osu_std.pp_calculator import get_ppv2
 from utils.osu.osu_droid.br_pp_calculator import get_bpp
 
 
@@ -14,7 +14,7 @@ def format_pp(user_data):
     return user_data
 
 
-def index(request):
+def board(request):
     template = loader.get_template("leaderboard/index.html")
 
     context = {
@@ -80,3 +80,9 @@ def calculate(request):
         context = {}
 
     return HttpResponse(template.render(context, request))
+
+
+def invite(request):
+    template = loader.get_template("invite/index.html")
+
+    return HttpResponse(template.render({}, request))
