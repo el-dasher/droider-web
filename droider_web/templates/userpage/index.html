@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     {% if user_data %}
-        <title>{{ user_data.username }}</title>
+    <title>{{ user_data.username }}</title>
     {% else %}
-        <title>UNKNOWN USER</title>
+    <title>UNKNOWN USER</title>
     {% endif %}
-    <meta charset="UTF-8"  name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <style>
-        .avatar-img {
-            border: 5px solid;
-            border-radius: 25px;
-        }
-        p {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
+      #data-div {
+        padding: 10px;
+      }
+      .avatar-img {
+        border: 5px solid;
+        border-radius: 25px;
+      }
+      p {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
     </style>
-</head>
-<body>
-    <div id="data-div" align="center">
+  </head>
+  <body>
+    {% include "../nav.html" %}<br>
+    <main>
+      <div id="data-div" align="center">
         {% if user_data %}
-            <img class="avatar-img" src="{{ user_data.avatar_url }}" alt="{{ user_data.username }}">
-            <p style="font-weight: bold">{{ user_data.username }}</p>
-            <p>DPP: {{ user_data.raw_pp}}pp<br></p>
-            <p>ACC: {{ user_data.overall_acc }}%<br></p>
-            <p>PlayCount: {{ user_data.playcount }}<br></p>
-            <p>Score: {{ user_data.total_score }}<br></p>
-            <p>UID: {{ user_data.user_id }}</p>
+        <img
+          class="avatar-img"
+          src="{{ user_data.avatar_url }}"
+          alt="{{ user_data.username }}"
+        />
+        <p style="font-weight: bold">{{ user_data.username }}</p>
+        <p>DPP: {{ user_data.raw_pp}}pp<br /></p>
+        <p>ACC: {{ user_data.overall_acc }}%<br /></p>
+        <p>PlayCount: {{ user_data.playcount }}<br /></p>
+        <p>Score: {{ user_data.total_score }}<br /></p>
+        <p>UID: {{ user_data.user_id }}</p>
         {% else %}
-            <p>Usúario não encontrado, reação.</p>
+        <p>Usúario não encontrado, reação.</p>
         {% endif %}
-    </div>
-</body>
+      </div>
+    </main>
+  </body>
 </html>

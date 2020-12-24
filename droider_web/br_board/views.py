@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.template import loader
 from config.firebase_cfg import DATABASE
 from utils.osu.osu_droid.droid_data_getter import get_droid_data
+from utils.osu.osu_std.ppv2_calculator import get_ppv2
+from utils.osu.osu_droid.br_pp_calculator import get_bpp
 
 
 def format_pp(user_data):
@@ -35,5 +37,46 @@ async def user_page(request, user_id):
         context["user_data"]["raw_pp"] = f'{context["user_data"]["raw_pp"]:.2f}'
     except TypeError:
         pass
+
+    return HttpResponse(template.render(context, request))
+
+
+def calculate(request):
+    template = loader.get_template("osu_calc/index.html")
+    params = request.GET
+
+    map_id, mods, misses, accuracy = "", "NM", 0, 100
+
+    if len(params) >= 1:
+        try:
+            map_id = params["map_id"].split("/")[-1]
+            mods: str = params["mods"]
+            try:
+                accuracy = float(params["acc"])
+            except (KeyError, ValueError):
+                accuracy = 100
+        except KeyError:
+            try:
+                map_id = params["map_id"].split("/")[-1]
+            except KeyError:
+                return HttpResponse("O id ou link do mapa não foi informado!")
+        finally:
+            try:
+                context = {
+                    "pp_data": [
+                        {
+                            "name": "ppv2",
+                            "calculated": get_ppv2(map_id, mods, misses, accuracy, formatted=True)
+                        },
+                        {
+                            "name": "bpp",
+                            "calculated": get_bpp(map_id, mods, misses, accuracy, formatted=True)
+                        }
+                    ]
+                }
+            except IndexError:
+                return HttpResponse(f"{map_id} é um link ou id ínvalido")
+    else:
+        context = {}
 
     return HttpResponse(template.render(context, request))

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>droider pp calculator</title>
+    <style>
+      #calc-form input,
+      label,
+      #submit-play {
+        display: block;
+        margin: auto;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    {% include "../nav.html" %}
+    <br /><br />
+    <main>
+      {% if not pp_data %}
+      <div>
+        <form id="calc-form">
+          <label>Link do beatmap</label
+          ><input
+            type="text"
+            name="bmap-link"
+            id="bm"
+            placeholder="id ou link"
+          /><br />
+          <label>Mods:</label
+          ><input type="text" name="mods" id="mod" placeholder="NM" /><br />
+          <label>Misses</label
+          ><input type="number" name="misses" id="miss" placeholder="0" /><br />
+          <label>Accuracy</label
+          ><input type="number" name="acc" id="acc" placeholder="0" /><br />
+
+          <button
+            id="submit-play"
+            class="waves-effect waves-light btn"
+            name="submit-btn"
+            type="submit"
+          >
+            Calcular
+          </button>
+        </form>
+      </div>
+      <script>
+        function getCalcQuery() {
+          link = document.getElementById("bm").value;
+
+          mods = { query: document.getElementById("mod").value, name: "mods" };
+          misses = {
+            query: document.getElementById("miss").value,
+            name: "misses",
+          };
+          acc = { query: document.getElementById("acc").value, name: "acc" };
+          map_id = { query: link.split("/").slice(-1)[0], name: "map-id" };
+
+          [map_id, mods, misses, acc, map_id].forEach((query) => {
+            if (query.query.length === 0) {
+              switch (query.name) {
+                case "mods":
+                  mods.query = "NM";
+                  break;
+                case "misses":
+                  misses.query = 0;
+                  break;
+                case "acc":
+                  acc.query = 100.0;
+                  break;
+                case "map-id":
+                  map_id.query = "undefined";
+              }
+            }
+          });
+        }
+
+        function getCalcUrl() {
+          return `/calc?map_id=${map_id.query}&mods=${mods.query}&misses=${misses.query}&acc=${acc.query}`;
+        }
+
+        const calcForm = document.getElementById("calc-form");
+        const calcButton = document.getElementById("submit-play");
+
+        let link = null;
+        let mods = null;
+        let misses = null;
+        let acc = null;
+
+        let map_id = null;
+
+        calcButton.addEventListener(
+          "click",
+          (event) => {
+            if (event.clientX !== 0 || event.clientY !== 0) {
+              getCalcQuery();
+              location.href = getCalcUrl();
+            }
+          },
+          true
+        );
+        calcForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+        });
+        calcForm.addEventListener("keyup", (event) => {
+          if (event.keyCode === 13) {
+            switch (event.target.name) {
+              case "bmap-link":
+                document.getElementById("mod").focus();
+                break;
+              case "mods":
+                document.getElementById("miss").focus();
+                break;
+              case "misses":
+                document.getElementById("acc").focus();
+                break;
+              case "acc":
+                document.getElementById("submit-play").focus();
+                break;
+              case "submit-btn":
+                getCalcQuery();
+                location.href = getCalcUrl();
+                break;
+            }
+          }
+        });
+      </script>
+      {% else %}
+      <table class="highlight">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Total PP</th>
+            <th>Aim PP</th>
+            <th>Speed PP</th>
+            <th>Acc PP</th>
+            <th>Accuracy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pp_type in pp_data %}
+          <tr>
+            <td>{{ pp_type.name }}</td>
+            <td>{{ pp_type.calculated.raw_pp}}</td>
+            <td>{{ pp_type.calculated.aim_pp}}</td>
+            <td>{{ pp_type.calculated.speed_pp }}</td>
+            <td>{{ pp_type.calculated.acc_pp }}</td>
+            <td>{{ pp_type.calculated.acc_percent }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </main>
+  </body>
+</html>
