@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1"
     />
     <meta property="og:url" content="/rank-br" />
-    <meta property="og:title" content="osu!droid br leaderboard" />
+    <meta property="og:title" content="o!d brasil lb" />
     <meta
       property="og:description"
       content="Os melhores jogadores brasileiros de osu!droid :)"
@@ -51,10 +51,10 @@
               <td>{{ user.overall_acc}}%</td>
               <td class="aim">{{ user.aim }}</td>
               <td class="speed">{{ user.speed }}</td>
-              <td class="reading">{{user.reading}}</td>
+              <td class="reading">{{ user.reading }}</td>
               <td class="consistency">{{ user.consistency }}</td>
               <td class="playcount">{{user.playcount}}</td>
-              <td>{{user.raw_pp}}</td>
+              <td>{{ user.raw_pp }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -70,7 +70,6 @@
     const speedValues = document.getElementsByClassName("speed");
     const readingValues = document.getElementsByClassName("reading");
     const consistencyValues = document.getElementsByClassName("consistency");
-
     [aimValues, speedValues, readingValues, consistencyValues].forEach(
       (item) => {
         Array.from(item).forEach((data) => {

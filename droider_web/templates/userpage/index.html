@@ -11,7 +11,6 @@
       name="viewport"
       content="width=device-width, initial-scale=1"
     />
-
     <meta property="og:title" content="Perfil do osu!droid" />
     <meta
       property="og:description"
@@ -23,9 +22,13 @@
       itemprop="image"
       content="https://cdn.discordapp.com/icons/789604515028271154/a_73ec721f5311691d8136e7516047e38e.gif?size=1024"
     />
-
     <style>
-      #main-div {
+      #main-div,
+      #pp-data-div {
+        display: flex;
+        justify-content: center;
+      }
+      #pp-data-outer {
         display: flex;
         justify-content: center;
       }
@@ -63,11 +66,59 @@
           <p>PlayCount: {{ user_data.playcount }}<br /></p>
           <p>Score: {{ user_data.total_score }}<br /></p>
           <p>UID: {{ user_data.user_id }}</p>
+        </div>
+      </div>
+      <div id="pp-data-outer">
+        <div id="data-div" class="grey lighten-3">
+          {% if user_data.pp_data %}
+          <table class="responsive-table">
+            <thead>
+              <tr>
+                <th>Top</th>
+                <th>Title</th>
+                <th>Combo</th>
+                <th>Mods</th>
+                <th>Acc</th>
+                <th>Misses</th>
+                <th>DPP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for top_play in user_data.pp_data %}
+              <tr class="top-play-data">
+                <td class="play-rank"></td>
+                <td>{{ top_play.title }}</td>
+                <td>{{ top_play.combo }}</td>
+                <td class="mods">{{ top_play.mods }}</td>
+                <td>{{ top_play.accuracy }}</td>
+                <td>{{ top_play.miss }}</td>
+                <td>{{ top_play.pp }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
           {% else %}
-          <p>Usúario não encontrado, reação.</p>
+          <p>Não foi possivel adquirir dados sobre pp's</p>
           {% endif %}
         </div>
       </div>
+      {% else %}
+      <p>Usúario não encontrado, reação.</p>
+      {% endif %}
+      <script>
+        const topPlayRanks = Array.from(
+          document.getElementsByClassName("play-rank")
+        );
+        const mods = Array.from(document.getElementsByClassName("mods"));
+        for (const [index, rank] of topPlayRanks.entries()) {
+          rank.innerText = index + 1
+        }
+        mods.forEach((mod) => {
+          if (mod.innerText.length === 0) {
+            mod.innerText = "NM";
+          }
+        });
+      </script>
     </main>
   </body>
 </html>
