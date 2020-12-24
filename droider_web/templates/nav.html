@@ -21,6 +21,10 @@
     #userIdQuery {
       text-align: center;
     }
+    .fixed-nav {
+      position: fixed;
+      top: 0;
+    }
   </style>
 </head>
 <body>
@@ -32,12 +36,14 @@
       <li><a href="/rank-br">RANK-DPP-BR</a></li>
       <li><a href="/calc">PP CALCULATOR</a></li>
     </ul>
-    <nav class="grey darken-3">
+    <nav class="fixed-nav grey darken-3">
       <div class="nav-wrapper">
         <a class="brand-logo right hide-on-small-only">osu!droid brasil</a>
         <ul>
           <li>
-            <a class="dropdown-trigger hide-on-large-only" data-target="menu-dropdown"
+            <a
+              class="dropdown-trigger hide-on-large-only"
+              data-target="menu-dropdown"
               ><i class="material-icons">menu</i></a
             >
           </li>
@@ -72,6 +78,11 @@
     $(document).ready(() => {
       $(".modal").modal();
       $(".dropdown-trigger").dropdown();
+      $(window).scroll(() => {
+        if ($(window).scrollTop() > 150) {
+          $("nav").addClass("sticky-nav");
+        }
+      });
     });
   </script>
 </body>

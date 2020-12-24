@@ -16,8 +16,12 @@
     <meta name="og:image" itemprop="image" content="" />
     <title>BR-DPP leaderboard</title>
     <style>
+      .player-data {
+        text-align: center;
+      }
       .player-data:hover {
         cursor: pointer;
+        background-color: lightgray;
       }
     </style>
   </head>
@@ -25,43 +29,33 @@
     {% include "../nav.html" %}
     <main>
       <div id="top-players-div" class="grey lighten-1">
-        {% if top_players_data %}
-        <table class="highlight responsive-table">
-          <thead>
-            <tr>
-              <th>Nickname</th>
-              <th>Score</th>
-              <th>Accuracy</th>
-              <th>Aim</th>
-              <th>Speed</th>
-              <th>Reading</th>
-              <th>Consistency</th>
-              <th>Playcount</th>
-              <th>Droid pp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for user in top_players_data %}
-            <tr
-              onclick="location.href='/user/{{ user.user_id }}'"
-              class="player-data"
-            >
-              <td>{{ user.username }}</td>
-              <td>{{ user.total_score }}</td>
-              <td>{{ user.overall_acc}}%</td>
-              <td class="aim">{{ user.aim }}</td>
-              <td class="speed">{{ user.speed }}</td>
-              <td class="reading">{{ user.reading }}</td>
-              <td class="consistency">{{ user.consistency }}</td>
-              <td class="playcount">{{user.playcount}}</td>
-              <td>{{ user.raw_pp }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          {% else %}
-          <p>Não foi possível resgatar os dados.</p>
-          {% endif %}
-        </table>
+        {% if top_players_data %} {% for user in top_players_data %}
+        <div class="player-data" class="grey lighten-3" onclick="location.href = '/user/{{ user.user_id }}'">
+          <span class="row" >
+            <!-- prettier-ignore -->
+            <span class="col s12"
+              ><h5>{{ user.username }}</h5>
+            </span>
+          </span>
+          <span>
+            <!-- prettier-ignore -->
+            <span class="col s12"
+              >DPP: {{ user.raw_pp }}<br />
+              Acc: {{ user.overall_acc }}<br />
+              Aim: <span class="aim">{{ user.aim }}</span><br />
+              Speed: <span class="speed">{{ user.speed }}</span><br />
+              Reading: <span class="reading">{{ user.reading }}</span><br />
+              Consistency:
+              <span class="consistency">{{ user.consistency }}</span><br />
+              Playcount: <span class="playcount">{{ user.playcount}}</span
+              ><br />
+            </span>
+          </span>
+          <div class="divider"></div>
+        </div>
+        {% endfor %} {% else %}
+        <p>Não foi possível resgatar os dados.</p>
+        {% endif %}
       </div>
     </main>
   </body>
