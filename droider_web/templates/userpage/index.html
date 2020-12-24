@@ -11,6 +11,19 @@
       name="viewport"
       content="width=device-width, initial-scale=1"
     />
+
+    <meta property="og:title" content="Perfil do osu!droid" />
+    <meta
+      property="og:description"
+      content="Woi, parece que alguém postou um link para um perfil do osu!droid..."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      name="og:image"
+      itemprop="image"
+      content="https://cdn.discordapp.com/icons/789604515028271154/a_73ec721f5311691d8136e7516047e38e.gif?size=1024"
+    />
+
     <style>
       #data-div {
         padding: 10px;
@@ -26,7 +39,7 @@
     </style>
   </head>
   <body>
-    {% include "../nav.html" %}<br>
+    {% include "../nav.html" %}<br />
     <main>
       <div id="data-div" align="center">
         {% if user_data %}
