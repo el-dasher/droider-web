@@ -23,7 +23,7 @@ def get_ppv2(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 10
                                                                                  )[2:][:-2].replace("\n", "")
 
     with open(RECENT_OSU_FILE_PATH, "w+") as recent_file:
-        recent_file.write({beatmap_data})
+        recent_file.write(beatmap_data)
         recent_file.close()
 
     beatmap: pyttanko.beatmap = PARSER.map(open(RECENT_OSU_FILE_PATH))
