@@ -26,28 +26,20 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
 
     beatmap: pyttanko.beatmap = PARSER.map(open(CALC_OSU_FILE_PATH))
 
-    mods_for_pyttanko = []
-
     beatmap.od = beatmap.od - 4
     beatmap.cs = beatmap.cs - 4
 
-    print(beatmap.ar)
     if "PR" in mods:
         beatmap.od = beatmap.od + 4
     if "SC" in mods:
         beatmap.cs = beatmap.cs + 4
-    if "REZ" or "EZ" in mods:
+    if "REZ" in mods:
+        beatmap.ar -= 0.5
         beatmap.cs -= 1
-        beatmap.od -= 1
-    if "HR" in mods:
-        beatmap.cs += 1
-        beatmap.od += 1
-    for to_calc in ["HD", "NM", "FL", "TD", "PPV2"]:
-        if to_calc in mods:
-            mods_for_pyttanko.append(to_calc)
+        beatmap.od = beatmap.od / 2
+        beatmap.hp = beatmap.hp / 2
 
-    mods_for_pyttanko = "".join(mods_for_pyttanko)
-    mods: int = pyttanko.mods_from_str(mods_for_pyttanko)
+    mods: int = pyttanko.mods_from_str(mods)
 
     beatmap.nobjects = beatmap.ncircles + beatmap.nspinners + beatmap.nsliders
 
