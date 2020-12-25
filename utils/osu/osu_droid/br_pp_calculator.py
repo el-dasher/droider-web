@@ -57,8 +57,8 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     raw_pp -= aim_pp
     raw_pp -= speed_pp
 
-    aim_pp = aim_pp ** 0.850
-    speed_pp = speed_pp ** 0.850
+    aim_pp = aim_pp ** 0.875
+    speed_pp = speed_pp ** 0.875
 
     raw_pp += aim_pp
     raw_pp += speed_pp
