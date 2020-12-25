@@ -43,9 +43,9 @@
           <label>Mods</label
           ><input type="text" name="mods" id="mod" placeholder="NM" /><br />
           <label>Misses</label
-          ><input type="number" name="misses" id="miss" placeholder="0" /><br />
+          ><input type="number" name="misses" id="miss" placeholder="0 misses" /><br />
           <label>Accuracy</label
-          ><input type="number" name="acc" id="acc" placeholder="0" /><br />
+          ><input type="number" name="acc" id="acc" placeholder="100%" /><br />
           <button
             id="submit-play"
             class="waves-effect waves-light btn grey darken-1"
@@ -148,8 +148,8 @@
           {% for pp_type in pp_data %}
           <tr>
             <td>{{ pp_type.name }}</td>
-            <td>{{ pp_type.calculated.raw_pp}}</td>
-            <td>{{ pp_type.calculated.aim_pp}}</td>
+            <td>{{ pp_type.calculated.raw_pp }}</td>
+            <td>{{ pp_type.calculated.aim_pp }}</td>
             <td>{{ pp_type.calculated.speed_pp }}</td>
             <td>{{ pp_type.calculated.acc_pp }}</td>
             <td>{{ pp_type.calculated.acc_percent }}%</td>
