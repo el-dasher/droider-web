@@ -69,12 +69,20 @@
     </nav>
   </header>
   <script>
-    window.addEventListener("ready", () => {
-      const userIdQuery = document.getElementById("userIdQuery");
-    });
     function getUserQuery(event) {
       userIdQueryValue = userIdQuery.value;
       location.href = `/user/${userIdQueryValue}`;
     }
+    const userIdQuery = document.getElementById("userIdQuery");
+    userIdQuery.focus();
+    $(document).ready(() => {
+      $(".modal").modal();
+      $(".dropdown-trigger").dropdown();
+      $(window).scroll(() => {
+        if ($(window).scrollTop() > 150) {
+          $("nav").addClass("sticky-nav");
+        }
+      });
+    });
   </script>
 </body>
