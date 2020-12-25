@@ -31,6 +31,7 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     beatmap.od = beatmap.od - 4
     beatmap.cs = beatmap.cs - 4
 
+    print(beatmap.ar)
     if "PR" in mods:
         beatmap.od = beatmap.od + 4
     if "SC" in mods:
