@@ -86,3 +86,4 @@ def invite(request):
     template = loader.get_template("invite/index.html")
 
     return HttpResponse(template.render({}, request))
+

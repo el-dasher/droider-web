@@ -25,13 +25,16 @@
       }
     </style>
   </head>
-  <body class="grey lighten-1" >
+  <body class="grey lighten-1">
     {% include "../nav.html" %}
     <br />
     <br />
     <br />
     <main>
-      <div id="top-players-div" class="grey lighten-1 hide-on-large-only">
+      <div
+        id="top-players-div"
+        class="grey lighten-1 hide-on-large-only"
+      >
         {% if top_players_data %} {% for user in top_players_data %}
         <div
           class="player-data"

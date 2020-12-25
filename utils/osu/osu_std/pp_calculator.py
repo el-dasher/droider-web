@@ -18,8 +18,6 @@ def get_ppv2(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 10
 
     mods: int = pyttanko.mods_from_str(mods)
 
-    print(mods)
-
     beatmap_data: str = str(requests.get(f"https://osu.ppy.sh/osu/{beatmap_id}", allow_redirects=True
                                          ).content).replace("\\n", "\n").replace("\\r", "\r"
                                                                                  )[2:][:-2].replace("\n", "")

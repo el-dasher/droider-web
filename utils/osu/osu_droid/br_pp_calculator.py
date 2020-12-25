@@ -1,5 +1,6 @@
 import pyttanko
 import requests
+from typing import Union
 
 CALC_OSU_FILE_PATH = "resources/osu/calc.osu"
 PARSER = pyttanko.parser()
@@ -14,9 +15,7 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     :param beatmap_id: id of the beatmap you want to get br pp info
     :return: a dict: {raw_pp, aim_pp, speed_pp, acc_pp, acc_percent}
     """
-
-    mods: int = pyttanko.mods_from_str(mods)
-
+    mods: Union[str, int] = mods.upper()
     beatmap_data: str = str(requests.get(f"https://osu.ppy.sh/osu/{beatmap_id}", allow_redirects=True
                                          ).content).replace("\\n", "\n").replace("\\r", "\r"
                                                                                  )[2:][:-2].replace("\n", "")
@@ -27,8 +26,27 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
 
     beatmap: pyttanko.beatmap = PARSER.map(open(CALC_OSU_FILE_PATH))
 
-    beatmap.cs = beatmap.cs - 4
+    mods_for_pyttanko = []
+
     beatmap.od = beatmap.od - 4
+    beatmap.cs = beatmap.cs - 4
+
+    if "PR" in mods:
+        beatmap.od = beatmap.od + 4
+    if "SC" in mods:
+        beatmap.cs = beatmap.cs + 4
+    if "REZ" or "EZ" in mods:
+        beatmap.cs -= 1
+        beatmap.od -= 1
+    if "HR" in mods:
+        beatmap.cs += 1
+        beatmap.od += 1
+    for to_calc in ["HD", "NM", "FL", "TD", "PPV2"]:
+        if to_calc in mods:
+            mods_for_pyttanko.append(to_calc)
+
+    mods_for_pyttanko = "".join(mods_for_pyttanko)
+    mods: int = pyttanko.mods_from_str(mods_for_pyttanko)
 
     beatmap.nobjects = beatmap.ncircles + beatmap.nspinners + beatmap.nsliders
 
@@ -43,26 +61,14 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     raw_pp, aim_pp, speed_pp, acc_pp, acc_percent = pyttanko.ppv2(
         stars.aim, stars.speed, bmap=beatmap, mods=mods, nmiss=misses, n300=n300, n100=n100, n50=n50)
 
-    if stars.aim_length_bonus + stars.speed_length_bonus < 2.50:
+    raw_pp -= aim_pp
+    raw_pp -= speed_pp
 
-        raw_pp -= aim_pp
-        raw_pp -= speed_pp
+    aim_pp = aim_pp ** 0.9
+    speed_pp = speed_pp ** 0.9
 
-        aim_pp -= aim_pp // 1.50
-        speed_pp -= speed_pp // 3
-
-        raw_pp += aim_pp
-        raw_pp += speed_pp
-    else:
-
-        raw_pp -= aim_pp
-        raw_pp -= speed_pp
-
-        aim_pp -= aim_pp // 2
-        speed_pp -= speed_pp // 4
-
-        raw_pp += aim_pp
-        raw_pp += speed_pp
+    raw_pp += aim_pp
+    raw_pp += speed_pp
 
     if not formatted:
         return {

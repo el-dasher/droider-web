@@ -26,13 +26,13 @@
       }
     </style>
   </head>
-<body class="grey darken-2">
+  <body class="grey lighten-3">
     {% include "../nav.html" %}
-    <br /><br />
+    <br /><br /><br />
     <main>
       {% if not pp_data %}
       <div>
-        <form id="calc-form">
+        <form id="calc-form" class="white darken-1">
           <label>Link do beatmap</label
           ><input
             type="text"
@@ -40,7 +40,7 @@
             id="bm"
             placeholder="id ou link"
           /><br />
-          <label>Mods:</label
+          <label>Mods</label
           ><input type="text" name="mods" id="mod" placeholder="NM" /><br />
           <label>Misses</label
           ><input type="number" name="misses" id="miss" placeholder="0" /><br />
@@ -48,7 +48,7 @@
           ><input type="number" name="acc" id="acc" placeholder="0" /><br />
           <button
             id="submit-play"
-            class="waves-effect waves-light btn grey lighten-1"
+            class="waves-effect waves-light btn grey darken-1"
             name="submit-btn"
             type="submit"
           >
