@@ -30,14 +30,14 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     beatmap.cs = beatmap.cs - 4
 
     if "PR" in mods:
-        beatmap.od = beatmap.od + 4
+        beatmap.od += 4
     if "SC" in mods:
-        beatmap.cs = beatmap.cs + 4
+        beatmap.cs += 4
     if "REZ" in mods:
         beatmap.ar -= 0.5
         beatmap.cs -= 1
-        beatmap.od = beatmap.od / 2
-        beatmap.hp = beatmap.hp / 2
+        beatmap.od /= 2
+        beatmap.hp /= 2
 
     mods: int = pyttanko.mods_from_str(mods)
 
@@ -57,8 +57,8 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     raw_pp -= aim_pp
     raw_pp -= speed_pp
 
-    aim_pp = aim_pp ** 0.875
-    speed_pp = speed_pp ** 0.875
+    aim_pp = aim_pp ** 0.9
+    speed_pp = speed_pp ** 0.9
 
     raw_pp += aim_pp
     raw_pp += speed_pp
