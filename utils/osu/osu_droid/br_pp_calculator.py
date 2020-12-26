@@ -1,6 +1,5 @@
 import pyttanko
-import requests
-from typing import Union
+from ..osu_std.pp_calculator import get_ppv2
 
 CALC_OSU_FILE_PATH = "resources/osu/calc.osu"
 PARSER = pyttanko.parser()
@@ -15,19 +14,14 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
     :param beatmap_id: id of the beatmap you want to get br pp info
     :return: a dict: {raw_pp, aim_pp, speed_pp, acc_pp, acc_percent}
     """
-    mods: Union[str, int] = mods.upper()
-    beatmap_data: str = str(requests.get(f"https://osu.ppy.sh/osu/{beatmap_id}", allow_redirects=True
-                                         ).content).replace("\\n", "\n").replace("\\r", "\r"
-                                                                                 )[2:][:-2].replace("\n", "")
 
-    with open(CALC_OSU_FILE_PATH, "w+") as recent_file:
-        recent_file.write(beatmap_data)
-        recent_file.close()
+    mods = f"{mods.upper()}TD"
+    useful_data = get_ppv2(beatmap_id, mods, misses, accuracy, formatted=False)
 
-    beatmap: pyttanko.beatmap = PARSER.map(open(CALC_OSU_FILE_PATH))
+    beatmap = useful_data["beatmap"]
 
-    beatmap.od = beatmap.od - 4
-    beatmap.cs = beatmap.cs - 4
+    beatmap.od -= 4
+    beatmap.cs -= 4
 
     if "PR" in mods:
         beatmap.od += 4
@@ -35,33 +29,17 @@ def get_bpp(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100
         beatmap.cs += 4
     if "REZ" in mods:
         beatmap.ar -= 0.5
-        beatmap.cs -= 1
-        beatmap.od /= 2
-        beatmap.hp /= 2
+        beatmap.cs -= 4
+        beatmap.od /= 4
+        beatmap.hp /= 4
 
-    mods: int = pyttanko.mods_from_str(mods)
+    pp_data = beatmap.getPP(Mods=mods, accuracy=accuracy, recalculate=True)
 
-    beatmap.nobjects = beatmap.ncircles + beatmap.nspinners + beatmap.nsliders
-
-    stars = pyttanko.diff_calc().calc(beatmap)
-
-    accuracy = pyttanko.acc_round(accuracy, beatmap.nobjects, misses)
-
-    n300 = accuracy[0]
-    n100 = accuracy[1]
-    n50 = accuracy[2]
-
-    raw_pp, aim_pp, speed_pp, acc_pp, acc_percent = pyttanko.ppv2(
-        stars.aim, stars.speed, bmap=beatmap, mods=mods, nmiss=misses, n300=n300, n100=n100, n50=n50)
-
-    raw_pp -= aim_pp
-    raw_pp -= speed_pp
-
-    aim_pp = aim_pp ** 0.875
-    speed_pp = speed_pp ** 0.9
-
-    raw_pp += aim_pp
-    raw_pp += speed_pp
+    raw_pp = pp_data.total_pp
+    aim_pp = pp_data.aim_pp
+    speed_pp = pp_data.speed_pp
+    acc_pp = pp_data.acc_pp
+    acc_percent = pp_data.accuracy
 
     if not formatted:
         return {
