@@ -43,9 +43,23 @@
           <label>Mods</label
           ><input type="text" name="mods" id="mod" placeholder="NM" /><br />
           <label>Misses</label
-          ><input type="number" name="misses" id="miss" placeholder="0 misses" /><br />
+          ><input
+            type="number"
+            name="misses"
+            id="miss"
+            placeholder="0 misses"
+            min="0"
+          /><br />
           <label>Accuracy</label
-          ><input type="number" name="acc" id="acc" placeholder="100%" /><br />
+          ><input
+            type="number"
+            name="acc"
+            id="acc"
+            placeholder="100%"
+            min="0"
+            max="100"
+            step="any"
+          /><br />
           <button
             id="submit-play"
             class="waves-effect waves-light btn grey darken-1"
@@ -58,17 +72,19 @@
       </div>
       <script>
         function getCalcQuery() {
-          link = document.getElementById("bm").value;
+          link = beatMapInput.value;
           mods = { query: document.getElementById("mod").value, name: "mods" };
           misses = {
             query: document.getElementById("miss").value,
             name: "misses",
           };
-          acc = { query: document.getElementById("acc").value, name: "acc" };
+          acc = {
+            query: document.getElementById("acc").value,
+            name: "acc",
+          };
           map_id = { query: link.split("/").slice(-1)[0], name: "map-id" };
-
           [map_id, mods, misses, acc, map_id].forEach((query) => {
-            if (query.query.length === 0) {
+            if (query.query === "") {
               switch (query.name) {
                 case "mods":
                   mods.query = "NM";
@@ -80,17 +96,41 @@
                   acc.query = 100.0;
                   break;
                 case "map-id":
-                  map_id.query = "undefined";
+                  map_id.query = null;
                   break;
               }
             }
           });
+          return {
+            map_id: map_id,
+            mods: mods,
+            misses: misses,
+            acc: acc,
+            map_id: map_id,
+          };
         }
         function getCalcUrl() {
           return `/calc?map_id=${map_id.query}&mods=${mods.query}&misses=${misses.query}&acc=${acc.query}`;
         }
+        function isParamsValid() {
+          getCalcQuery();
+          let valid =
+            acc.query <= 100 &&
+            acc.query >= 0 &&
+            misses.query >= 0 &&
+            isNaN(parseInt(map_id.query)) === false &&
+            map_id.query !== null;
+          if (isNaN(parseInt(map_id.query))) {
+            beatMapInput.reportValidity()
+          }
+          return valid;
+        }
         const calcForm = document.getElementById("calc-form");
         const calcButton = document.getElementById("submit-play");
+        const beatMapInput = document.getElementById("bm");
+        beatMapInput.setCustomValidity(
+          "O link ou id do beatmap que você providenciou está incorreto!"
+        );
         let link = null;
         let mods = null;
         let misses = null;
@@ -101,7 +141,9 @@
           (event) => {
             if (event.clientX !== 0 || event.clientY !== 0) {
               getCalcQuery();
-              location.href = getCalcUrl();
+              if (isParamsValid()) {
+                location.href = getCalcUrl();
+              }
             }
           },
           true

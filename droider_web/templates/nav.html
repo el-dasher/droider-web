@@ -3,7 +3,6 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
   />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <link
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet"
@@ -12,7 +11,6 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
   />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   <style>
     .dropdown-content {
       width: max-content !important;
@@ -21,7 +19,7 @@
     #userIdQuery {
       text-align: center;
     }
-    .fixed-nav {
+    .sticky-nav {
       position: fixed;
       top: 0;
     }
@@ -36,7 +34,7 @@
       <li><a href="/rank-br">RANK-DPP-BR</a></li>
       <li><a href="/calc">PP CALCULATOR</a></li>
     </ul>
-    <nav class="fixed-nav grey darken-3">
+    <nav class="sticky-nav grey darken-3">
       <div class="nav-wrapper">
         <a class="brand-logo right hide-on-small-only">osu!droid brasil</a>
         <ul>
@@ -68,21 +66,20 @@
       </div>
     </nav>
   </header>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   <script>
     function getUserQuery(event) {
       userIdQueryValue = userIdQuery.value;
       location.href = `/user/${userIdQueryValue}`;
     }
-    const userIdQuery = document.getElementById("userIdQuery");
-    userIdQuery.focus();
+    window.addEventListener("ready", () => {
+      const userIdQuery = document.getElementById("userIdQuery");
+      userIdQuery.focus();
+    });
     $(document).ready(() => {
       $(".modal").modal();
       $(".dropdown-trigger").dropdown();
-      $(window).scroll(() => {
-        if ($(window).scrollTop() > 150) {
-          $("nav").addClass("sticky-nav");
-        }
-      });
     });
   </script>
 </body>
