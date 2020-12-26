@@ -61,6 +61,7 @@ def calculate(request):
             except KeyError:
                 return HttpResponse("O id ou link do mapa não foi informado!")
         finally:
+            # noinspection PyBroadException
             try:
                 context = {
                     "pp_data": [
@@ -74,7 +75,7 @@ def calculate(request):
                         }
                     ]
                 }
-            except IndexError:
+            except Exception:
                 return HttpResponse(f"{map_id} é um link ou id ínvalido")
     else:
         context = {}
@@ -86,4 +87,3 @@ def invite(request):
     template = loader.get_template("invite/index.html")
 
     return HttpResponse(template.render({}, request))
-
