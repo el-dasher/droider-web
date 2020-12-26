@@ -112,25 +112,30 @@
         function getCalcUrl() {
           return `/calc?map_id=${map_id.query}&mods=${mods.query}&misses=${misses.query}&acc=${acc.query}`;
         }
-        function isParamsValid() {
-          getCalcQuery();
+        async function isParamsValid() {
           let valid =
             acc.query <= 100 &&
             acc.query >= 0 &&
             misses.query >= 0 &&
             isNaN(parseInt(map_id.query)) === false &&
             map_id.query !== null;
-          if (isNaN(parseInt(map_id.query))) {
-            beatMapInput.reportValidity()
+          if (
+            isNaN(parseInt(map_id.query)) === true ||
+            map_id.query === null ||
+            map_id.query.length <= 2
+          ) {
+            beatMapInput.setCustomValidity(
+              "O link ou id do beatmap que você providenciou está incorreto!"
+            );
+            valid = false;
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            beatMapInput.setCustomValidity("");
           }
           return valid;
         }
         const calcForm = document.getElementById("calc-form");
         const calcButton = document.getElementById("submit-play");
         const beatMapInput = document.getElementById("bm");
-        beatMapInput.setCustomValidity(
-          "O link ou id do beatmap que você providenciou está incorreto!"
-        );
         let link = null;
         let mods = null;
         let misses = null;
@@ -138,10 +143,10 @@
         let map_id = null;
         calcButton.addEventListener(
           "click",
-          (event) => {
+          async (event) => {
             if (event.clientX !== 0 || event.clientY !== 0) {
               getCalcQuery();
-              if (isParamsValid()) {
+              if (await isParamsValid()) {
                 location.href = getCalcUrl();
               }
             }
@@ -151,7 +156,7 @@
         calcForm.addEventListener("submit", (event) => {
           event.preventDefault();
         });
-        calcForm.addEventListener("keyup", (event) => {
+        calcForm.addEventListener("keyup", async (event) => {
           if (event.keyCode === 13) {
             switch (event.target.name) {
               case "bmap-link":
@@ -164,11 +169,10 @@
                 document.getElementById("acc").focus();
                 break;
               case "acc":
-                document.getElementById("submit-play").focus();
-                break;
-              case "submit-btn":
                 getCalcQuery();
-                location.href = getCalcUrl();
+                if (await isParamsValid()) {
+                  location.href = getCalcUrl();
+                }
                 break;
             }
           }
