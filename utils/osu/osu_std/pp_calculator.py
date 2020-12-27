@@ -4,8 +4,10 @@ import requests
 RECENT_OSU_FILE_PATH = "resources/osu/calc.osu"
 
 
-def get_ppv2(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 100.00, formatted: bool = False):
+def get_ppv2(beatmap_id, mods: str = "NM", misses: int = 0,
+             accuracy: float = 100.00, max_combo: int = None, formatted: bool = False):
     """
+    :param max_combo: the max_combo obtained on the play, defaults to beatmap max-combo
     :param formatted: returns with 2 floats decimals if set to true
     :param accuracy: accuracy of the play
     :param misses: number of misses of the play
@@ -24,8 +26,11 @@ def get_ppv2(beatmap_id, mods: str = "NM", misses: int = 0, accuracy: float = 10
 
     beatmap: oppadc.OsuMap = oppadc.OsuMap(file_path=RECENT_OSU_FILE_PATH)
 
+    if max_combo is None:
+        max_combo = beatmap.maxCombo()
+
     # noinspection PyTypeChecker
-    calculated_pp = beatmap.getPP(Mods=mods, accuracy=accuracy, misses=misses)
+    calculated_pp = beatmap.getPP(Mods=mods, accuracy=accuracy, misses=misses, combo=max_combo)
 
     raw_pp = calculated_pp.total_pp
     aim_pp = calculated_pp.aim_pp

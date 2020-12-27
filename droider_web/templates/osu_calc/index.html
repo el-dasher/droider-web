@@ -50,6 +50,14 @@
             placeholder="0 misses"
             min="0"
           /><br />
+          <label>Max Combo</label
+          ><input
+            type="number"
+            name="max-combo"
+            id="max-combo"
+            placeholder="beatmap max combo"
+            min="0"
+          /><br />
           <label>Accuracy</label
           ><input
             type="number"
@@ -82,8 +90,12 @@
             query: document.getElementById("acc").value,
             name: "acc",
           };
+          combo = {
+            query: document.getElementById("max-combo").value,
+            name: "max-combo",
+          };
           map_id = { query: link.split("/").slice(-1)[0], name: "map-id" };
-          [map_id, mods, misses, acc, map_id].forEach((query) => {
+          [map_id, mods, misses, acc, map_id, combo].forEach((query) => {
             if (query.query === "") {
               switch (query.name) {
                 case "mods":
@@ -94,6 +106,9 @@
                   break;
                 case "acc":
                   acc.query = 100.0;
+                  break;
+                case "combo":
+                  combo.query = null;
                   break;
                 case "map-id":
                   map_id.query = null;
@@ -110,7 +125,7 @@
           };
         }
         function getCalcUrl() {
-          return `/calc?map_id=${map_id.query}&mods=${mods.query}&misses=${misses.query}&acc=${acc.query}`;
+          return `/calc?map_id=${map_id.query}&mods=${mods.query}&misses=${misses.query}&combo=${combo.query}&acc=${acc.query}`;
         }
         async function isParamsValid() {
           let valid =
@@ -140,6 +155,7 @@
         let mods = null;
         let misses = null;
         let acc = null;
+        let combo = null;
         let map_id = null;
         calcButton.addEventListener(
           "click",

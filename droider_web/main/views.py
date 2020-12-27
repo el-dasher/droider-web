@@ -45,7 +45,7 @@ def calculate(request):
     template = loader.get_template("osu_calc/index.html")
     params = request.GET
 
-    map_id, mods, misses, accuracy = "", "NM", 0, 100
+    map_id, mods, misses, accuracy, combo = "", "NM", 0, 100, None
 
     if len(params) >= 1:
         try:
@@ -54,7 +54,11 @@ def calculate(request):
             try:
                 accuracy = float(params["acc"])
             except (KeyError, ValueError):
-                accuracy = 100
+                pass
+            try:
+                combo = int(float((params["combo"])))
+            except (KeyError, ValueError):
+                pass
         except KeyError:
             try:
                 map_id = params["map_id"].split("/")[-1]
@@ -67,11 +71,11 @@ def calculate(request):
                     "pp_data": [
                         {
                             "name": "ppv2",
-                            "calculated": get_ppv2(map_id, mods, misses, accuracy, formatted=True)
+                            "calculated": get_ppv2(map_id, mods, misses, accuracy, combo, formatted=True)
                         },
                         {
                             "name": "bpp",
-                            "calculated": get_bpp(map_id, mods, misses, accuracy, formatted=True)
+                            "calculated": get_bpp(map_id, mods, misses, accuracy, combo, formatted=True)
                         }
                     ]
                 }
