@@ -56,6 +56,8 @@
             alt="{{ user_data.username }}"
           />
           <p style="font-weight: bold">{{ user_data.username }}</p>
+          <p>Country: {{ user_data.country }}<br /></p>
+          <p>Rank score: #{{ user_data.rankscore }}<br /></p>
           <p>DPP: {{ user_data.raw_pp}}pp<br /></p>
           <p>ACC: {{ user_data.overall_acc }}%<br /></p>
           <p>PlayCount: {{ user_data.playcount }}<br /></p>
@@ -65,7 +67,7 @@
       </div>
       <div id="pp-data-outer">
         <div id="data-div" class="grey lighten-3">
-          {% if user_data.pp_data %} {% for top_play in user_data.pp_data %}
+          {% if pp_data %} {% for top_play in pp_data.list %}
           <div class="row">
             <div class="col s12">
               <span class="play-rank"></span>{{ top_play.title }}

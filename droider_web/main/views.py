@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from config.firebase_cfg import DATABASE
-from utils.osu.osu_droid.droid_data_getter import get_droid_data
+from utils.osu.osu_droid.droid_data_getter import OsuDroidProfile
 from utils.osu.osu_std.pp_calculator import get_ppv2
 from utils.osu.osu_droid.br_pp_calculator import get_bpp
 
@@ -29,9 +29,15 @@ def board(request):
 async def user_page(request, user_id):
     template = loader.get_template("userpage/index.html")
 
-    context: dict = dict(
-        user_data=(await get_droid_data(user_id))["user_data"]
-    )
+    player = OsuDroidProfile(user_id)
+
+    try:
+        context: dict = {
+            "user_data": player.profile(),
+            "pp_data": player.pp_data()
+        }
+    except KeyError:
+        return HttpResponse(f"Não foi possível encontrar um usuário com a uid: {user_id}")
 
     try:
         context["user_data"]["raw_pp"] = f'{context["user_data"]["raw_pp"]:.2f}'
