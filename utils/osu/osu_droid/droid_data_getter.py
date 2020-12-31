@@ -1,13 +1,13 @@
+from config.setup import DPP_BOARD_API
 import requests
 from bs4 import BeautifulSoup
-
-from config.setup import DPP_BOARD_API
 
 
 class OsuDroidProfile:
     def __init__(self, uid: int):
         self.uid = uid
 
+    @property
     def profile(self):
         unfiltered_profile_info = BeautifulSoup(requests.get(
             f"http://ops.dgsrz.com/profile.php?uid={self.uid}").text, features="html.parser"
@@ -16,24 +16,31 @@ class OsuDroidProfile:
 
         profile_info = [profile_data.text for profile_data in unfiltered_profile_info]
 
+        try:
+            raw_pp = self.total_pp
+        except KeyError:
+            raw_pp = 0
+
         return {
-            "username": self.username(),
-            "avatar_url": self.avatar(),
-            "rankscore": self.rankscore(),
-            "raw_pp": self.total_pp(),
-            "country": self.country(),
+            "username": self.username,
+            "avatar_url": self.avatar,
+            "rankscore": self.rankscore,
+            "raw_pp": raw_pp,
+            "country": self.country,
             "total_score": profile_info[0],
             "overall_acc": profile_info[1],
             "playcount": profile_info[2],
-            "player_best": self._best_play(),
+            "player_best": self.best_play,
             "user_id": self.uid
         }
 
+    @property
     def pp_data(self):
         data = requests.get(f"http://droidppboard.herokuapp.com/api/getplayertop?key={DPP_BOARD_API}&uid={self.uid}")
 
         return data.json()["data"]["pp"]
 
+    @property
     def avatar(self):
         avatar_url = BeautifulSoup(requests.get(
             f"http://ops.dgsrz.com/profile.php?uid={self.uid}").text, features="html.parser"
@@ -41,6 +48,7 @@ class OsuDroidProfile:
 
         return avatar_url
 
+    @property
     def rankscore(self):
         rankscore = BeautifulSoup(requests.get(
             f"http://ops.dgsrz.com/profile.php?uid={self.uid}").text, features="html.parser"
@@ -49,6 +57,7 @@ class OsuDroidProfile:
 
         return rankscore
 
+    @property
     def username(self):
         username = BeautifulSoup(requests.get(
             f"http://ops.dgsrz.com/profile.php?uid={self.uid}").text, features="html.parser"
@@ -57,6 +66,7 @@ class OsuDroidProfile:
 
         return username
 
+    @property
     def country(self):
         username = BeautifulSoup(requests.get(
             f"http://ops.dgsrz.com/profile.php?uid={self.uid}").text, features="html.parser"
@@ -65,16 +75,19 @@ class OsuDroidProfile:
 
         return username
 
+    @property
     def total_pp(self):
         data = requests.get(f"http://droidppboard.herokuapp.com/api/getplayertop?key={DPP_BOARD_API}&uid={self.uid}")
 
         return data.json()["data"]["pp"]["total"]
 
-    def _best_play(self):
+    @property
+    def best_play(self):
         data = requests.get(f"http://droidppboard.herokuapp.com/api/getplayertop?key={DPP_BOARD_API}&uid={self.uid}")
 
         return data.json()["data"]["pp"]["list"][0]
 
+    @property
     def recent_plays(self):
         unfiltered_recent_plays = BeautifulSoup(requests.get(
             f"http://ops.dgsrz.com/profile.php?uid={self.uid}").text, features="html.parser"
@@ -124,7 +137,9 @@ class OsuDroidProfile:
                             if len(data) == 2 or "None" in data:
                                 play_info[i] = "NM"
                             play_info[i] = play_info[i].replace("DoubleTime", "DT").replace(
-                                "Hidden", "HD").replace("HardRock", "HR").replace("Precise", "PR")
+                                "Hidden", "HD").replace("HardRock", "HR").replace(
+                                "Precise", "PR").replace("NoFail", "NF").replace(
+                                "Easy", "EZ").replace("NightCore", "NC")
 
                 title = play_info[0]
                 score = play_info[1]

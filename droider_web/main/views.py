@@ -9,7 +9,7 @@ from utils.osu.osu_droid.br_pp_calculator import get_bpp
 def format_pp(user_data):
     for user in user_data:
         user: dict
-        user["raw_pp"] = f"{float(user['raw_pp']):.2f}"
+        user['profile']["raw_pp"] = f"{float(user['profile']['raw_pp']):.2f}"
 
     return user_data
 
@@ -33,8 +33,8 @@ async def user_page(request, user_id):
 
     try:
         context: dict = {
-            "user_data": player.profile(),
-            "pp_data": player.pp_data()
+            "user_data": player.profile,
+            "pp_data": player.pp_data
         }
     except KeyError:
         return HttpResponse(f"Não foi possível encontrar um usuário com a uid: {user_id}")
