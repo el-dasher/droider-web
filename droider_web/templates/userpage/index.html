@@ -67,20 +67,24 @@
       </div>
       <div id="pp-data-outer">
         <div id="data-div" class="grey lighten-3">
-          {% if pp_data %} {% for top_play in pp_data.list %}
-          <div class="row">
-            <div class="col s12">
-              <span class="play-rank"></span>{{ top_play.title }}
-            </div>
-          </div>
-          <div class="row">
-            <!-- prettier-ignore -->
-            <div class="col s12">
+          {% if pp_data %}
+          <ol>
+            {% for top_play in pp_data.list %}
+            <li>
+              <div class="row">
+                <div class="col s12">{{ top_play.title }}</div>
+              </div>
+              <div class="row">
+                <!-- prettier-ignore -->
+                <div class="col s12">
               {{ top_play.combo }}x - <span class="mods">{{ top_play.mods }}</span> - {{top_play.accuracy }} - {{ top_play.miss }}miss - {{ top_play.pp}}pp
             </div>
-          </div>
-          <div class="divider"></div>
-          {% endfor %} {% else %}
+              </div>
+              <div class="divider"></div>
+            </li>
+            {% endfor %}
+          </ol>
+          {% else %}
           <p>Não foi possivel adquirir dados sobre pp's</p>
           {% endif %}
         </div>
@@ -89,13 +93,7 @@
       <p>Usúario não encontrado, reação.</p>
       {% endif %}
       <script>
-        const topPlayRanks = Array.from(
-          document.getElementsByClassName("play-rank")
-        );
         const mods = Array.from(document.getElementsByClassName("mods"));
-        for (const [index, rank] of topPlayRanks.entries()) {
-          rank.innerText = `${index + 1} - `;
-        }
         mods.forEach((mod) => {
           if (mod.innerText.length === 0) {
             mod.innerText = "NM";
